@@ -1,5 +1,10 @@
 package com.anderson.mendes.domain.model;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,10 +30,11 @@ public class Evento {
 	private String local;
 	
 	@Column(nullable = false)
-	private String data;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate data;
 	
 	@Column(nullable = false)
-	private String horario;
+	private LocalTime horario;
 	
 	
 	
