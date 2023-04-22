@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.anderson.mendes.domain.exceptions.EntidadeEmUsoException;
 import com.anderson.mendes.domain.exceptions.EntidadeNaoEncontradaException;
-import com.anderson.mendes.domain.model.Evento;
 import com.anderson.mendes.domain.model.Pessoa;
 import com.anderson.mendes.domain.repository.PessoaRepository;
+import com.anderson.mendes.domain.service.CadastroPessoaService;
 
 @RestController
 @RequestMapping("/pessoas")
@@ -28,6 +28,9 @@ public class PessoaController {
 
 	@Autowired
 	private PessoaRepository pessoaRepository;
+	
+	@Autowired
+	private CadastroPessoaService cadastroPessoaService;
 	
 	@GetMapping
 	public List<Pessoa> listar() {
@@ -48,7 +51,7 @@ public class PessoaController {
 	@PostMapping
 	public ResponseEntity<?> adicionar(@RequestBody Pessoa pessoa) {
 		try {
-			pessoa = pessoaRepository.save(pessoa);
+			pessoa = cadastroPessoaService.salvar(pessoa);
 			return ResponseEntity.status(HttpStatus.CREATED).body(pessoa);
 		} catch (EntidadeNaoEncontradaException e) {
 			return ResponseEntity.badRequest()
