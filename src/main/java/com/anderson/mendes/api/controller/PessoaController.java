@@ -38,14 +38,8 @@ public class PessoaController {
 	}
 	
 	@GetMapping("/{pessoaId}")
-	public ResponseEntity<Pessoa> buscar(@RequestBody Long pessoaId) {
-		Optional<Pessoa> pessoa = pessoaRepository.findById(pessoaId);
-		
-		if (pessoa.isPresent()) {
-			return ResponseEntity.ok(pessoa.get());
-		}
-		
-		return ResponseEntity.notFound().build();
+	public Pessoa buscar(@RequestBody Long pessoaId) {
+		return cadastroPessoaService.buscarOuFalhar(pessoaId);
 	}
 	
 	@PostMapping
