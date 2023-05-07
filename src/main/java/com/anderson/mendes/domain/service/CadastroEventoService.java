@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.anderson.mendes.domain.exceptions.EntidadeEmUsoException;
 import com.anderson.mendes.domain.exceptions.EntidadeNaoEncontradaException;
@@ -32,6 +33,12 @@ public class CadastroEventoService {
 			throw new EntidadeEmUsoException(
 				String.format("Evento de código %d não pode ser removido, pois está em uso", eventoId));
 		}
+	}
+	
+	public Evento buscarOuFalhar(@PathVariable Long eventoId) {
+		return eventoRepository.findById(eventoId)
+			.orElseThrow(() -> new EntidadeNaoEncontradaException(
+				String.format("Não existe um cadastro de evento com código %d", eventoId)));
 	}
 	
 }

@@ -38,14 +38,8 @@ public class EventoController {
 	}
 	
 	@GetMapping("/{eventoId}")
-	public ResponseEntity<Evento> buscar(@PathVariable Long eventoId) {
-		Optional<Evento> evento = eventoRepository.findById(eventoId);
-		
-		if (evento.isPresent()) {
-			return ResponseEntity.ok(evento.get());
-		}
-
-		return ResponseEntity.notFound().build();
+	public Evento buscar(@PathVariable Long eventoId) {
+		return cadastroEventoService.buscarOuFalhar(eventoId);
 	
 	}
 	
