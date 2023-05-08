@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anderson.mendes.domain.exceptions.EntidadeEmUsoException;
@@ -39,20 +40,13 @@ public class EventoController {
 	
 	@GetMapping("/{eventoId}")
 	public Evento buscar(@PathVariable Long eventoId) {
-		return cadastroEventoService.buscarOuFalhar(eventoId);
-	
+		return cadastroEventoService.buscarOuFalhar(eventoId);	
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> adicionar(@RequestBody Evento evento) {
-		try {
-			evento = cadastroEventoService.salvar(evento);
-			return ResponseEntity.status(HttpStatus.CREATED)
-					.body(evento);
-		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.badRequest()
-					.body(e.getMessage());
-		}
+	@ResponseStatus(HttpStatus.CREATED)
+	public Evento adicionar(@RequestBody Evento evento) {
+		return cadastroEventoService.salvar(evento);
 	}
 	
 	@PutMapping("/{eventoId}")
