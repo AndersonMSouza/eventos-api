@@ -1,7 +1,6 @@
 package com.anderson.mendes.api.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,21 +49,12 @@ public class EventoController {
 	}
 	
 	@PutMapping("/{eventoId}")
-	public ResponseEntity<?> atualizar(@PathVariable Long eventoId, @RequestBody Evento evento) {
-		try {
-			Optional<Evento> eventoAtual = eventoRepository.findById(eventoId);
+	public Evento atualizar(@PathVariable Long eventoId, @RequestBody Evento evento) {
+		Evento eventoAtual = cadastroEventoService.buscarOuFalhar(eventoId);
 			
-			if (eventoAtual.isPresent()) {
-				BeanUtils.copyProperties(evento, eventoAtual.get(), "id");
-				Evento eventoSalvo = cadastroEventoService.salvar(eventoAtual.get());
-				return ResponseEntity.ok(eventoSalvo);
-			}
-			
-			return ResponseEntity.notFound().build();
-			
-		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
+		BeanUtils.copyProperties(evento, eventoAtual, "id");
+		
+		return cadastroEventoService.salvar(eventoAtual);
 	}
 	
 	@DeleteMapping("/{eventoId}")
