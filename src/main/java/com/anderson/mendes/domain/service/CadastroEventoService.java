@@ -13,6 +13,12 @@ import com.anderson.mendes.domain.repository.EventoRepository;
 
 @Service
 public class CadastroEventoService {
+	
+	private static final String MSG_EVENTO_EM_USO 
+	= "Evento de código %d não pode ser removido, pois está em uso";
+
+	private static final String MSG_EVENTO_NAO_ENCONTRADO 
+	= "Não existe um cadastro de evento com código %d";
 
 	@Autowired
 	private EventoRepository eventoRepository;
@@ -27,18 +33,18 @@ public class CadastroEventoService {
 			
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(
-				String.format("Não existe um cadastro de evento com código %d", eventoId));
+				String.format(MSG_EVENTO_NAO_ENCONTRADO, eventoId));
 		
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
-				String.format("Evento de código %d não pode ser removido, pois está em uso", eventoId));
+				String.format(MSG_EVENTO_EM_USO, eventoId));
 		}
 	}
 	
 	public Evento buscarOuFalhar(@PathVariable Long eventoId) {
 		return eventoRepository.findById(eventoId)
 			.orElseThrow(() -> new EntidadeNaoEncontradaException(
-				String.format("Não existe um cadastro de evento com código %d", eventoId)));
+				String.format(MSG_EVENTO_NAO_ENCONTRADO, eventoId)));
 	}
 	
 }
