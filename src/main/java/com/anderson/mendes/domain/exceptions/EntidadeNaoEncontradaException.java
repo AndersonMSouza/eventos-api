@@ -1,6 +1,6 @@
 package com.anderson.mendes.domain.exceptions;
 
-public class EntidadeNaoEncontradaException extends RuntimeException {
+public abstract class EntidadeNaoEncontradaException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 	
